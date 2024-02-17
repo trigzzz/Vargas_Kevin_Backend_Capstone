@@ -1,28 +1,42 @@
-// Requiring and configuring the .env file to access its variables 
-require("dotenv").config()
-// Requiring express
-const express = require('express')
-// Creating the express server and storing inside the app variable
-const app = express()
-// Port in which the server will run on 
-const PORT = process.env.PORT || 8000
-// Requiring example router
-const exampleRouter = require('./routes/exampleRoute')
-
-const middlewares = require('./middleware/exampleMiddleware')
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const connectDB = require('./config/db-connection');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
 
 
-// Configuring the server to accept and parse JSON data.
-app.use(express.json())
+// Connect to database
+connectDB();
 
-// Configuring the server to run the middleware
-app.use(middlewares.middleware)
+const app = express();
 
-// Connecting the router to the server
-app.use('/', exampleRouter)
+// Middlewares
+app.use(cors()); // Use cors to handle cross-origin requests
+app.use(helmet()); // Use helmet to secure Express headers
+app.use(morgan('tiny')); // HTTP request logger
+app.use(express.json()); // Body parser for JSON payloads
 
+// Route imports
+const videosRoutes = require('./routes/videos');
+const workoutLogsRoutes = require('./routes/workoutLogs');
+const communityPostsRoutes = require('./routes/communityPosts');
+const plansRoutes = require('./routes/plans');
+const usersRoutes = require('./routes/users');
 
-// Calling the listen function telling the server to listen on port 3000
-app.listen(PORT, () => {
-  console.log(`Listening on port: ${PORT}`)
-})
+// Use routes
+app.use('/api/videos', videosRoutes);
+app.use('/api/workoutLogs', workoutLogsRoutes);
+app.use('/api/communityPosts', communityPostsRoutes);
+app.use('/api/plans', plansRoutes);
+app.use('/api/users', usersRoutes);
+
+// Basic route for testing server is up
+app.get('/', (req, res) => {
+  res.send('Floodz Training API is running...');
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
