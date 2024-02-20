@@ -1,14 +1,20 @@
 const WorkoutLog = require('../models/workoutLog');
 
 exports.createWorkoutLog = async (req, res) => {
+    console.log(req.user)
     try {
-        const workoutLog = new WorkoutLog({ ...req.body, user: req.user.id });
+        const workoutLog = new WorkoutLog({
+            ...req.body,
+            user: req.user.id 
+        });
         await workoutLog.save();
         res.status(201).json(workoutLog);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        console.error(error);
+        res.status(500).json({ error: error.message });
     }
 };
+
 
 exports.getAllWorkoutLogs = async (req, res) => {
     try {

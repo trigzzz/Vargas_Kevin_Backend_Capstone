@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
   res.send('Floodz Training API is running...');
 });
 
+//PORT
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,6 +1,7 @@
 const CommunityPost = require('../models/communityPost');
 
 exports.createPost = async (req, res) => {
+    console.log('Request user:', req.user);
     try {
         const post = new CommunityPost({ ...req.body, author: req.user.id });
         await post.save();

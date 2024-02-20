@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const VideoSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
-  skillLevel: { type: String, enum: ['beginner', 'intermediate', 'advanced'] },
+  skillLevel: { type: String, enum: ['Beginner', 'Intermediate', 'Advanced'] },
   duration: Number, // in minutes
-  category: { type: String, enum: ['shooting', 'dribbling', 'defense', 'fitness', 'strategy'] },
+  category: { type: String, enum: ['Shooting', 'Dribbling', 'Defense', 'Fitness', 'Strategy'] },
   url: { type: String, required: true }, // URL to the video content
 });
 
