@@ -51,12 +51,15 @@ exports.updateWorkoutLog = async (req, res) => {
 
 exports.deleteWorkoutLog = async (req, res) => {
     try {
-        const workoutLog = await WorkoutLog.findByIdAndDelete(req.params.id);
-        if (!workoutLog) {
-            return res.status(404).json({ message: 'Workout Log not found' });
-        }
-        res.status(200).json({ message: 'Workout Log deleted successfully' });
+      const log = await WorkoutLog.findByIdAndDelete(req.params.id);
+  
+      if (!log) {
+        return res.status(404).json({ message: 'Workout log not found' });
+      }
+  
+      res.json({ message: 'Workout log deleted successfully' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      console.error("Error deleting workout log:", error);
+      res.status(500).json({ message: 'Error deleting workout log' });
     }
-};
+  };
